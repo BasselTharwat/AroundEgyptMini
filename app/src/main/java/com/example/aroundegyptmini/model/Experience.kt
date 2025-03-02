@@ -1,4 +1,4 @@
-package com.example.aroundegyptmini.data.model
+package com.example.aroundegyptmini.model
 
 import kotlinx.serialization.Serializable
 

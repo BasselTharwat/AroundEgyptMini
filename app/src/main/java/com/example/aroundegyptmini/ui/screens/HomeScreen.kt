@@ -1,14 +1,18 @@
 package com.example.aroundegyptmini.ui.screens
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,11 +28,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.aroundegyptmini.R
+import com.example.aroundegyptmini.ui.components.RecentExperiences
+import com.example.aroundegyptmini.ui.theme.AroundEgyptMiniTheme
 
+
+@Composable
+fun HomeScreen(
+    homeScreenUiState: HomeScreenUiState,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when (homeScreenUiState) {
+        is HomeScreenUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
+        is HomeScreenUiState.Error -> ErrorScreen(retryAction,
+
+            modifier = modifier.fillMaxSize())
+        is HomeScreenUiState.Success ->
+            Column(
+                modifier = modifier
+            ) {
+                TopBar()
+                WelcomeText()
+                RecentExperiences(homeScreenUiState.recent)
+            }
+    }
+
+
+}
 
 @Composable
 fun TopBar(
@@ -92,19 +122,34 @@ fun WelcomeText(
     }
 }
 
-
 @Composable
-fun HomeScreen(
+fun ErrorScreen(
+    retryAction: () -> Unit,
     modifier: Modifier = Modifier
-) {
-    Column(
+){
+    Column (
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        TopBar()
-        WelcomeText()
-
+        Image(painter = painterResource(R.drawable.connection_error), contentDescription = "")
+        Text(text = stringResource(R.string.loading_failed), Modifier.padding(dimensionResource(R.dimen.padding_medium)))
+        Button(onClick = retryAction) {
+            Text(stringResource(R.string.retry))
+        }
     }
 }
+
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Image(
+        modifier = modifier.size(dimensionResource(R.dimen.loading_image_size)),
+        painter = painterResource(R.drawable.loading_img),
+        contentDescription = stringResource(R.string.loading)
+    )
+}
+
+
 
 
 @Preview
@@ -119,9 +164,28 @@ fun TopBarPreview() {
     TopBar()
 }
 
+@Preview(showBackground = true)
+@Composable
+fun LoadingScreenPreview() {
+    AroundEgyptMiniTheme {
+        LoadingScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ErrorScreenPreview() {
+    AroundEgyptMiniTheme {
+        ErrorScreen({})
+    }
+}
+
 @Preview(showBackground = true, widthDp = 320, heightDp = 640)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(
+        homeScreenUiState = HomeScreenUiState.Loading,
+        retryAction = {}
+    )
 }
 
