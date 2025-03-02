@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Around Egypt Mini</string>
+    <string name="welcome_title">"Welcome"</string>
+    <string name="welcome_body_text">"Now you can explore any experience in 360 degrees and get all the details about all in one place."</string>
 </resources>
