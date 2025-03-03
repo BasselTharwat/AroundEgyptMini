@@ -5,11 +5,20 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
 @Serializable
-data class ExperienceResponse(
+data class ExperiencesResponse(
     val meta: Meta,
     val data: List<Experience>,
     val pagination: JsonObject
 )
+
+
+@Serializable
+data class ExperienceResponse(
+    val meta: Meta,
+    val data: Experience,
+    val pagination: JsonObject
+)
+
 
 @Serializable
 data class Meta(

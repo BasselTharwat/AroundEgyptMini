@@ -1,14 +1,32 @@
 package com.example.aroundegyptmini.network
 
 import com.example.aroundegyptmini.model.Experience
-import com.example.aroundegyptmini.model.ExperienceResponse
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import com.example.aroundegyptmini.model.ExperiencesResponse
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ExperienceApiService{
     @GET("api/v2/experiences")
-    suspend fun getRecentExperiences(): ExperienceResponse
+    suspend fun getRecentExperiences(): ExperiencesResponse
 
-    @GET("api/v2/experiences?filter[recommended]=true")
-    suspend fun getRecommendedExperiences(): ExperienceResponse
+    @GET("api/v2/experiences")
+    suspend fun getRecommendedExperiences(
+        @Query("filter[recommended]") recommended: Boolean = true
+    ): ExperiencesResponse
+
+    @GET("/api/v2/experiences")
+    suspend fun searchExperiences(
+        @Query("filter[title]") searchText: String
+    ): ExperiencesResponse
+
+    @GET("/api/v2/experiences/{id}")
+    suspend fun getExperience(id: Int): ExperienceResponse
+
+
+    @POST("/api/v2/experiences/{id}/like")
+    suspend fun likeExperience(@Path("id") id: Int) : Experience
+
+
 }

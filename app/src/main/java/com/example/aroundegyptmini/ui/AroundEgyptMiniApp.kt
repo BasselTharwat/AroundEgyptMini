@@ -20,7 +20,7 @@ fun AroundEgyptMiniApp(){
     ) {
         val homeScreenViewModel: HomeScreenViewModel = viewModel(factory = HomeScreenViewModel.Factory)
         HomeScreen(
-            homeScreenUiState = homeScreenViewModel.homeScreenUiState,
+            viewModel = homeScreenViewModel,
             retryAction = homeScreenViewModel::getExperiences
         )
     }

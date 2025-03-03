@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Around Egypt Mini</string>
-    <string name="welcome_title">"Welcome"</string>
+    <string name="welcome_title">"Welcome!"</string>
     <string name="welcome_body_text">"Now you can explore any experience in 360 degrees and get all the details about all in one place."</string>
-    <string name="loading_failed">Failed to load</string>
+    <string name="oops">Oops!</string>
     <string name="retry">Retry</string>
     <string name="loading">Loading</string>
     <string name="most_recent">Most Recent</string>
+    <string name="recommended_experiences">Recommended Experiences</string>
     <string name="experience_photo">Experience Photo</string>
+    <string name="description">Description</string>
+    <string name="try_luxor">Try "Luxor"</string>
 
 </resources>
