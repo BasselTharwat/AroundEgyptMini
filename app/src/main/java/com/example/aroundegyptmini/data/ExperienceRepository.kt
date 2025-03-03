@@ -12,7 +12,7 @@ interface ExperienceRepository{
 class NetworkExperienceRepository(
     private val experienceApiService: ExperienceApiService
 ): ExperienceRepository{
-    override suspend fun getRecentExperiences(): List<Experience> = experienceApiService.getRecentExperiences()
-    override suspend fun getRecommendedExperiences(): List<Experience> = experienceApiService.getRecommendedExperiences()
+    override suspend fun getRecentExperiences(): List<Experience> = experienceApiService.getRecentExperiences().data
+    override suspend fun getRecommendedExperiences(): List<Experience> = experienceApiService.getRecommendedExperiences().data
 
 }

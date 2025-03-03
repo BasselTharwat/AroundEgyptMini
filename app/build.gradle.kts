@@ -1,7 +1,14 @@
 plugins {
+    /*
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+     */
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("org.jetbrains.kotlin.plugin.compose")
+
 }
 
 android {
@@ -49,13 +56,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation("androidx.compose.material3:material3:1.4.0-alpha07")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("io.coil-kt:coil-compose:2.7.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation(libs.material3)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.retrofit)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
