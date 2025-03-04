@@ -15,6 +15,7 @@ import com.example.aroundegyptmini.model.Experience
 fun SearchExperiences(
     searchExperiences: List<Experience>,
     onExperienceClick: (Experience) -> Unit,
+    onLikeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ){
     Column (
@@ -25,6 +26,8 @@ fun SearchExperiences(
         ){
             items(searchExperiences){ experience ->
                 ExperienceItem(experience,
+                    modifier = modifier,
+                    onLikeClick = onLikeClick,
                     onExperienceClick = { onExperienceClick(experience) })
             }
         }

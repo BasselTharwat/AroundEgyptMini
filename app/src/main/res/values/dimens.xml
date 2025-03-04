@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="line_thickness">2dp</dimen>
     <dimen name="padding_extra_small">4dp</dimen>"
     <dimen name="padding_small">8dp</dimen>
     <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_extra_large">32dp</dimen>
     <dimen name="loading_image_size">200dp</dimen>
     <dimen name="experience_photo_height">154dp</dimen>"
     <dimen name="experience_photo_details_height">285dp</dimen>

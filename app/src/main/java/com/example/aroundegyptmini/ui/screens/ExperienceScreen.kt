@@ -1,6 +1,7 @@
 package com.example.aroundegyptmini.ui.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,9 @@ import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,16 +42,33 @@ import com.example.aroundegyptmini.model.Experience
 
 @Composable
 fun ExperienceScreen(experience: Experience,
-                          modifier: Modifier = Modifier) {
+                     onLikeClick: () -> Unit,
+                     modifier: Modifier = Modifier) {
     Column (modifier) {
         ExperienceItemCard(experience = experience,
             modifier = modifier
                 .fillMaxWidth()
                 .height(dimensionResource(R.dimen.experience_photo_details_height)))
-        ExperienceTitle(experience = experience)
-        Text(experience.address)
-        Text(stringResource(R.string.description))
-        Text(experience.description)
+        ExperienceTitle(experience = experience,
+            onLikeClick = onLikeClick,
+            modifier = modifier)
+        HorizontalDivider(modifier = modifier
+            .padding(top = dimensionResource(R.dimen.padding_medium),
+                bottom = dimensionResource(R.dimen.padding_medium),
+                start = dimensionResource(R.dimen.padding_small),
+                end = dimensionResource(R.dimen.padding_small)
+            ),
+            thickness = dimensionResource(R.dimen.line_thickness)
+        )
+        Text(stringResource(R.string.description),
+            style = MaterialTheme.typography.displayLarge,
+            modifier = modifier
+                .padding(dimensionResource(R.dimen.padding_medium))
+        )
+        Text(experience.description,
+            style = MaterialTheme.typography.displayMedium,
+            modifier = modifier
+                .padding(dimensionResource(R.dimen.padding_medium)))
     }
 
 
@@ -103,14 +123,25 @@ fun ExperienceItemCard(experience: Experience,
 @Composable
 fun ExperienceTitle(
     experience: Experience,
+    onLikeClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    Row (modifier = modifier) {
+    Row (modifier = modifier
+        .fillMaxWidth()
+        .padding(dimensionResource(R.dimen.padding_small)),
+        horizontalArrangement = Arrangement.SpaceBetween
+        ) {
         Column (modifier = modifier){
             Text(experience.title,
-                style = MaterialTheme.typography.displayMediumEmphasized)
+                style = MaterialTheme.typography.displayMediumEmphasized,
+                modifier = modifier
+                    .padding(top = dimensionResource(R.dimen.padding_medium))
+                        )
             Text(experience.address,
-                style = MaterialTheme.typography.displayMedium)
+                style = MaterialTheme.typography.displayMedium,
+                modifier = modifier
+                    .padding(
+                        top = dimensionResource(R.dimen.padding_small)))
         }
 
         Icon(
@@ -121,13 +152,19 @@ fun ExperienceTitle(
                 .padding(dimensionResource(R.dimen.padding_medium))
         )
 
-        Icon(
-            imageVector = Icons.Default.FavoriteBorder,
-            contentDescription = "Bottom Left Icon",
-            tint = Color.Black,
-            modifier = Modifier
-                .padding(dimensionResource(R.dimen.padding_medium))
-        )
+        IconButton(
+            onClick = onLikeClick,
+            modifier = modifier
+        ) {
+            Icon(
+                imageVector = Icons.Default.FavoriteBorder,
+                contentDescription = "Bottom Left Icon",
+                tint = Color.Black,
+                modifier = Modifier
+                    .padding(dimensionResource(R.dimen.padding_medium))
+            )
+        }
+
 
 
     }

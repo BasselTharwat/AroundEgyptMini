@@ -17,6 +17,7 @@ import com.example.aroundegyptmini.model.Experience
 fun RecentExperiences(
     recentExperiences: List<Experience>,
     onExperienceClick: (Experience) -> Unit,
+    onLikeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ){
     Column (
@@ -29,6 +30,8 @@ fun RecentExperiences(
         ){
             items(recentExperiences){ experience ->
                 ExperienceItem(experience,
+                    modifier = modifier,
+                    onLikeClick = onLikeClick,
                     onExperienceClick = { onExperienceClick(experience) })
             }
         }

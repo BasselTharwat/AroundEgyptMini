@@ -1,6 +1,7 @@
 package com.example.aroundegyptmini.ui.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -17,6 +18,7 @@ import com.example.aroundegyptmini.model.Experience
 fun RecommendedExperiences(
     recommendedExperiences: List<Experience>,
     onExperienceClick: (Experience) -> Unit,
+    onLikeClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ){
     Column (
@@ -27,6 +29,8 @@ fun RecommendedExperiences(
         LazyRow (modifier = modifier) {
             items(recommendedExperiences) { experience ->
                 ExperienceItem(experience,
+                    modifier = modifier,
+                    onLikeClick = onLikeClick,
                     onExperienceClick = { onExperienceClick(experience) })
             }
         }

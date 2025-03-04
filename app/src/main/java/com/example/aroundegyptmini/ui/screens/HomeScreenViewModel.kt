@@ -1,9 +1,6 @@
 package com.example.aroundegyptmini.ui.screens
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -19,8 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 sealed interface HomeScreenUiState{
     data class Success(
@@ -117,21 +112,38 @@ class HomeScreenViewModel(private val experienceRepository: ExperienceRepository
         }
     }
 
-    fun likeExperience(id: Int) {
+
+    fun likeExperience(id: String) {
         viewModelScope.launch {
             try {
-                val deferredExperience = async { experienceRepository.getExperience(id) }
-                val experience = deferredExperience.await()
-                val deferredUpdatedExperience = async { experienceRepository.likeExperience(id) }
-                val updatedExperience = deferredUpdatedExperience.await()
+                experienceRepository.likeExperience(id)
 
-                _homeScreenUiState.value = HomeScreenUiState.Success()
+                val updatedExperience = experienceRepository.getExperience(id)
+
+                _homeScreenUiState.update { currentState ->
+                    if (currentState is HomeScreenUiState.Success) {
+                        currentState.copy(
+                            recommended = currentState.recommended.map { experience ->
+                                if (experience.id == id) updatedExperience else experience
+                            },
+                            recent = currentState.recent.map { experience ->
+                                if (experience.id == id) updatedExperience else experience
+                            },
+                            searchResults = currentState.searchResults.map { experience ->
+                                if (experience.id == id) updatedExperience else experience
+                            }
+                        )
+                    } else {
+                        currentState
+                    }
+                }
             } catch (e: Exception) {
                 _homeScreenUiState.value = HomeScreenUiState.Error
-
             }
         }
     }
+
+
 
 
     companion object{

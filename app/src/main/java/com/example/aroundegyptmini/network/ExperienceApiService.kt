@@ -1,7 +1,9 @@
 package com.example.aroundegyptmini.network
 
 import com.example.aroundegyptmini.model.Experience
+import com.example.aroundegyptmini.model.ExperienceResponse
 import com.example.aroundegyptmini.model.ExperiencesResponse
+import com.example.aroundegyptmini.model.LikeResponse
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -22,11 +24,11 @@ interface ExperienceApiService{
     ): ExperiencesResponse
 
     @GET("/api/v2/experiences/{id}")
-    suspend fun getExperience(id: Int): ExperienceResponse
+    suspend fun getExperience(@Path("id") id: String): ExperienceResponse
 
 
     @POST("/api/v2/experiences/{id}/like")
-    suspend fun likeExperience(@Path("id") id: Int) : Experience
+    suspend fun likeExperience(@Path("id") id: String) : LikeResponse
 
 
 }

@@ -7,10 +7,17 @@ import kotlinx.serialization.json.JsonObject
 @Serializable
 data class ExperiencesResponse(
     val meta: Meta,
-    val data: List<Experience>,
+    val data: List<Experience> = emptyList(),
     val pagination: JsonObject
 )
 
+
+@Serializable
+data class LikeResponse(
+    val meta: Meta,
+    val data: Int,
+    val pagination: JsonObject
+)
 
 @Serializable
 data class ExperienceResponse(
@@ -19,150 +26,158 @@ data class ExperienceResponse(
     val pagination: JsonObject
 )
 
-
 @Serializable
 data class Meta(
-    val code: Int,
-    val errors: List<String>
+    val code: Int = 0,
+    val errors: List<String> = emptyList()
 )
 
 @Serializable
 data class Experience(
-    val id: String,
-    val title: String,
+    val id: String = "",
+    val title: String = "",
 
     @SerialName("cover_photo")
-    val coverPhoto: String,
+    val coverPhoto: String = "",
 
-    val description: String,
+    val description: String = "",
 
     @SerialName("views_no")
-    val viewsNo: Int,
+    val viewsNo: Int = 0,
 
     @SerialName("likes_no")
-    val likesNo: Int,
+    val likesNo: Int = 0,
 
-    val recommended: Int,
+    val recommended: Int = 0,
 
     @SerialName("has_video")
-    val hasVideo: Int,
+    val hasVideo: Int = 0,
 
-    val tags: List<Tag>,
+    val tags: List<Tag> = emptyList(),
     val city: City,
 
+    val tours: List<String> = emptyList(),
+
+    @SerialName("tour_url")
+    val tourUrl: String = "",
+
+    @SerialName("tour_xml")
+    val tourXml: String = "",
+
     @SerialName("tour_html")
-    val tourHtml: String?,
+    val tourHtml: String = "",
+
 
     @SerialName("famous_figure")
-    val famousFigure: String?,
+    val famousFigure: String = "",
 
     val period: Period?,
     val era: Era?,
     val founded: String?,
 
     @SerialName("detailed_description")
-    val detailedDescription: String,
+    val detailedDescription: String = "",
 
-    val address: String,
+    val address: String = "",
 
     @SerialName("gmap_location")
     val gmapLocation: GMapLocation,
 
     @SerialName("opening_hours")
-    val openingHours: Map<String, List<String>>,
+    val openingHours: Map<String, List<String>> = emptyMap(),
 
     @SerialName("translated_opening_hours")
-    val translatedOpeningHours: Map<String, TranslatedOpeningHour>,
+    val translatedOpeningHours: Map<String, TranslatedOpeningHour> = emptyMap(),
 
     @SerialName("starting_price")
-    val startingPrice: Int?,
+    val startingPrice: Int? = 0,
 
     @SerialName("ticket_prices")
-    val ticketPrices: List<TicketPrice>,
+    val ticketPrices: List<TicketPrice> = emptyList(),
 
     @SerialName("experience_tips")
-    val experienceTips: List<String>,
+    val experienceTips: List<String> = emptyList(),
 
     @SerialName("is_liked")
-    val isLiked: Boolean?,
+    val isLiked: Boolean? = false,
 
-    val reviews: List<Review>,
+    val reviews: List<Review> = emptyList(),
 
-    val rating: Int,
+    val rating: Int = 0,
 
     @SerialName("reviews_no")
-    val reviewsNo: Int,
+    val reviewsNo: Int = 0,
 
     @SerialName("audio_url")
-    val audioUrl: String?,
+    val audioUrl: String? = "",
 
     @SerialName("has_audio")
-    val hasAudio: Boolean
+    val hasAudio: Boolean = false,
 )
 
 @Serializable
 data class Tag(
-    val id: Int,
-    val name: String,
-    val disable: String?,
+    val id: Int = 0,
+    val name: String = "",
+    val disable: String? = "",
     @SerialName("top_pick")
-    val topPick: Int
+    val topPick: Int = 0
 )
 
 @Serializable
 data class City(
-    val id: Int,
-    val name: String,
-    val disable: String?,
+    val id: Int = 0,
+    val name: String = "",
+    val disable: String? = "",
     @SerialName("top_pick")
-    val topPick: Int
+    val topPick: Int = 0
 )
 
 @Serializable
 data class Era(
-    val id: String,
-    val value: String,
+    val id: String = "",
+    val value: String = "",
     @SerialName("created_at")
-    val createdAt: String,
+    val createdAt: String = "",
     @SerialName("updated_at")
-    val updatedAt: String
+    val updatedAt: String = ""
 )
 
 @Serializable
 data class GMapLocation(
-    val type: String,
-    val coordinates: List<Double>
+    val type: String = "",
+    val coordinates: List<Double> = emptyList()
 )
 
 @Serializable
 data class TranslatedOpeningHour(
-    val day: String,
-    val time: String
+    val day: String = "",
+    val time: String = ""
 )
 
 @Serializable
 data class TicketPrice(
-    val type: String,
-    val price: Int
+    val type: String = "",
+    val price: Int = 0
 )
 
 @Serializable
 data class Review(
-    val id: String,
-    val experience: String,
-    val name: String,
-    val rating: Int,
-    val comment: String,
+    val id: String = "",
+    val experience: String = "",
+    val name: String = "",
+    val rating: Int = 0,
+    val comment: String = "",
     @SerialName("created_at")
-    val createdAt: String,
+    val createdAt: String = "",
 )
 
 @Serializable
 data class Period(
-    val id: String,
-    val value: String,
+    val id: String = "",
+    val value: String = "",
     @SerialName("created_at")
-    val createdAt: String,
+    val createdAt: String = "",
     @SerialName("updated_at")
-    val updatedAt: String
+    val updatedAt: String = ""
 )
