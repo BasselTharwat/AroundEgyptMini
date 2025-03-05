@@ -2,8 +2,6 @@ package com.example.aroundegyptmini.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Embedded
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = "experiences")

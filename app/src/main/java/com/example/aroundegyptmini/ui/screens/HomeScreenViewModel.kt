@@ -1,6 +1,5 @@
 package com.example.aroundegyptmini.ui.screens
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -131,7 +130,8 @@ class HomeScreenViewModel(private val experienceRepository: ExperienceRepository
                             },
                             searchResults = currentState.searchResults.map { experience ->
                                 if (experience.id == id) updatedExperience else experience
-                            }
+                            },
+                            selectedExperience = if (currentState.selectedExperience?.id == id) updatedExperience else currentState.selectedExperience
                         )
                     } else {
                         currentState

@@ -1,13 +1,12 @@
 package com.example.aroundegyptmini.data
 
 import android.content.Context
-import com.example.aroundegyptmini.AroundEgyptMiniApplication
 import com.example.aroundegyptmini.network.ExperienceApiService
 import com.example.aroundegyptmini.network.ExperienceDao
-import retrofit2.Retrofit
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Retrofit
 
 interface AppContainer{
     val experienceRepository: ExperienceRepository

@@ -66,6 +66,12 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.kotlin.mockito.kotlin)
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

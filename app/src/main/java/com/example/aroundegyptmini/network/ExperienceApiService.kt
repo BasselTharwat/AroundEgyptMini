@@ -1,6 +1,5 @@
 package com.example.aroundegyptmini.network
 
-import com.example.aroundegyptmini.model.Experience
 import com.example.aroundegyptmini.model.ExperienceResponse
 import com.example.aroundegyptmini.model.ExperiencesResponse
 import com.example.aroundegyptmini.model.LikeResponse

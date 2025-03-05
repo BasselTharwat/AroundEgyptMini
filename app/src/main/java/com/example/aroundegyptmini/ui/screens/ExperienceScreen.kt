@@ -1,18 +1,15 @@
 package com.example.aroundegyptmini.ui.screens
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.RemoveRedEye
@@ -34,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.aroundegyptmini.R
@@ -47,7 +43,6 @@ fun ExperienceScreen(experience: Experience,
     Column (modifier) {
         ExperienceItemCard(experience = experience,
             modifier = modifier
-                .fillMaxWidth()
                 .height(dimensionResource(R.dimen.experience_photo_details_height)))
         ExperienceTitle(experience = experience,
             onLikeClick = onLikeClick,
@@ -68,7 +63,11 @@ fun ExperienceScreen(experience: Experience,
         Text(experience.description,
             style = MaterialTheme.typography.displayMedium,
             modifier = modifier
-                .padding(dimensionResource(R.dimen.padding_medium)))
+                .padding(
+                    start = dimensionResource(R.dimen.padding_medium),
+                    end = dimensionResource(R.dimen.padding_medium),
+                    top = dimensionResource(R.dimen.padding_small),
+                    bottom = dimensionResource(R.dimen.padding_extra_large)))
     }
 
 
@@ -99,6 +98,16 @@ fun ExperienceItemCard(experience: Experience,
             )
         }
 
+        Image(
+            painter = painterResource(R.drawable.explore),
+            contentDescription = null,
+            alignment = Alignment.Center,
+            modifier = modifier
+                .size(dimensionResource(R.dimen.explore_image_size))
+                .align(Alignment.Center)
+        )
+
+
         Icon(
             imageVector = Icons.Default.PhotoLibrary,
             contentDescription = "Bottom Right Icon",
@@ -108,6 +117,7 @@ fun ExperienceItemCard(experience: Experience,
                 .padding(dimensionResource(R.dimen.padding_medium))
         )
 
+
         Icon(
             imageVector = Icons.Default.RemoveRedEye,
             contentDescription = "Bottom Left Icon",
@@ -115,6 +125,18 @@ fun ExperienceItemCard(experience: Experience,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(dimensionResource(R.dimen.padding_medium))
+        )
+
+        Text(
+            text = if(experience.viewsNo > 1000) "${experience.viewsNo/1000}k view" else "${experience.viewsNo.toString()} views",
+            color = Color.White,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    start = dimensionResource(R.dimen.padding_super_large),
+                    bottom = dimensionResource(R.dimen.padding_medium)
+                )
+
         )
     }
 }
@@ -126,46 +148,63 @@ fun ExperienceTitle(
     onLikeClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    Row (modifier = modifier
-        .fillMaxWidth()
-        .padding(dimensionResource(R.dimen.padding_small)),
-        horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-        Column (modifier = modifier){
+
+    Column (
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                start = dimensionResource(R.dimen.padding_medium),
+                end = dimensionResource(R.dimen.padding_medium))
+    ) {
+        Row (
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = modifier
+                .fillMaxWidth()
+        ){
             Text(experience.title,
                 style = MaterialTheme.typography.displayMediumEmphasized,
                 modifier = modifier
                     .padding(top = dimensionResource(R.dimen.padding_medium))
-                        )
-            Text(experience.address,
-                style = MaterialTheme.typography.displayMedium,
-                modifier = modifier
-                    .padding(
-                        top = dimensionResource(R.dimen.padding_small)))
-        }
-
-        Icon(
-            imageVector = Icons.Default.Upload,
-            contentDescription = "Bottom Left Icon",
-            tint = Color.Black,
-            modifier = Modifier
-                .padding(dimensionResource(R.dimen.padding_medium))
-        )
-
-        IconButton(
-            onClick = onLikeClick,
-            modifier = modifier
-        ) {
-            Icon(
-                imageVector = Icons.Default.FavoriteBorder,
-                contentDescription = "Bottom Left Icon",
-                tint = Color.Black,
-                modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_medium))
             )
+
+            Row (
+                modifier = modifier,
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    imageVector = Icons.Default.Upload,
+                    contentDescription = "",
+                    tint = Color(0xfff18757),
+                    modifier = modifier
+                )
+
+                IconButton(
+                    onClick = onLikeClick,
+                    modifier = modifier
+                        .align(Alignment.Top)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = "",
+                        tint = Color(0xfff18757),
+                        modifier = modifier
+                    )
+                }
+                Text(
+                    text = if(experience.likesNo > 1000) "${experience.likesNo/1000}k" else experience.likesNo.toString(),
+                    style = MaterialTheme.typography.displayMedium,
+                    modifier = modifier
+                )
+
+            }
+
         }
-
-
+        Text(experience.address,
+            style = MaterialTheme.typography.displayMedium,
+            modifier = modifier
+                .padding(
+                    top = dimensionResource(R.dimen.padding_small)))
 
     }
 

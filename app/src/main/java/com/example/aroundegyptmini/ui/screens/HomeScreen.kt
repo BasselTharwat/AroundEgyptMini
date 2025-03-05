@@ -1,6 +1,5 @@
 package com.example.aroundegyptmini.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -142,8 +141,7 @@ fun HomeScreen(
                     dragHandle = {}
                 ) {
                     ExperienceScreen(experience = successState.selectedExperience,
-                        onLikeClick = { viewModel.likeExperience(successState.selectedExperience.id)
-                                      Log.d("HomeScreen", "onLikeClick: ${successState.selectedExperience.id}")},
+                        onLikeClick = { viewModel.likeExperience(successState.selectedExperience.id) },
                         modifier = modifier)
                 }
             }
