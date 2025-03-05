@@ -4,16 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.example.aroundegyptmini.model.Converters
 import com.example.aroundegyptmini.model.ExperienceEntity
 import com.example.aroundegyptmini.network.ExperienceDao
 
-/**
- * Database class with a singleton Instance object.
- */
+
 @Database(entities = [ExperienceEntity::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)
 abstract class ExperienceDatabase : RoomDatabase() {
 
     abstract fun experienceDao(): ExperienceDao

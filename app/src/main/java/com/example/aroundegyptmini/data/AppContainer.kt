@@ -24,8 +24,12 @@ class DefaultAppContainer(context: Context) : AppContainer{
 
     private val baseUrl = "https://aroundegypt.34ml.com/"
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
+
     private val retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl)
         .build()
 
