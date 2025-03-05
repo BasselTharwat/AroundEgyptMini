@@ -17,17 +17,13 @@ fun SearchExperiences(
 ){
     Column (
         modifier = modifier
-    ){
-        LazyColumn (
-            modifier = modifier
-        ){
-            items(searchExperiences){ experience ->
-                ExperienceItem(experience,
-                    modifier = modifier,
-                    onLikeClick = onLikeClick,
-                    onExperienceClick = { onExperienceClick(experience) })
-            }
+    ) {
+        for (experience in searchExperiences) {
+            ExperienceItem(experience,
+                modifier = modifier,
+                onLikeClick = onLikeClick,
+                onExperienceClick = { onExperienceClick(experience) })
+
         }
     }
-
 }

@@ -23,10 +23,10 @@ fun RecentExperiences(
     ){
         Text(stringResource(R.string.most_recent),
             style = MaterialTheme.typography.displayLarge)
-        LazyColumn (
+        Column (
             modifier = modifier
         ){
-            items(recentExperiences){ experience ->
+            for (experience in recentExperiences) {
                 ExperienceItem(experience,
                     modifier = modifier,
                     onLikeClick = onLikeClick,

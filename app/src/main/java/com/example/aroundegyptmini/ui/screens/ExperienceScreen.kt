@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PhotoLibrary
@@ -164,6 +165,7 @@ fun ExperienceTitle(
             Text(experience.title,
                 style = MaterialTheme.typography.displayMediumEmphasized,
                 modifier = modifier
+                    .width(dimensionResource(R.dimen.experience_title_width))
                     .padding(top = dimensionResource(R.dimen.padding_medium))
             )
 

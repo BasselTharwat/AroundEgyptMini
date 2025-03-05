@@ -9,6 +9,6 @@
     <string name="recommended_experiences">Recommended Experiences</string>
     <string name="experience_photo">Experience Photo</string>
     <string name="description">Description</string>
-    <string name="try_luxor">Try "Luxor"</string>
+    <string name="try_luxor">Try \"Luxor\"</string>
 
 </resources>

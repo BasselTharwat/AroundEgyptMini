@@ -1,6 +1,7 @@
 package com.example.aroundegyptmini.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,9 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Menu
@@ -28,25 +33,38 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.SearchBarState
 import androidx.compose.material3.SearchBarValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.aroundegyptmini.R
 import com.example.aroundegyptmini.ui.components.RecentExperiences
 import com.example.aroundegyptmini.ui.components.RecommendedExperiences
 import com.example.aroundegyptmini.ui.components.SearchExperiences
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -58,11 +76,12 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     val homeScreenUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var searchResultsShow: Boolean by rememberSaveable { mutableStateOf(false) }
+    var searchResultsShow by rememberSaveable { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val searchBarState = rememberSearchBarState()
-    val textFieldState = rememberTextFieldState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var searchText by rememberSaveable { mutableStateOf("") }
 
     when (homeScreenUiState) {
         is HomeScreenUiState.Loading -> LoadingScreen(modifier.fillMaxSize())
@@ -75,28 +94,31 @@ fun HomeScreen(
             val successState = homeScreenUiState as HomeScreenUiState.Success
 
             Column(modifier
+                .verticalScroll(rememberScrollState())
                 .padding(dimensionResource(R.dimen.padding_small))) {
                 TopBar(
                     searchBarState = searchBarState,
-                    textFieldState = textFieldState,
+                    keyboardController = keyboardController,
+                    searchText = searchText,
+                    onSearchTextChanged = { searchText = it },
                     scope = scope,
                     onCancelClick = {
-                        if(searchResultsShow){
-                            viewModel.clearSearchResults()
-                            textFieldState.clearText()
-                            searchResultsShow = false
-                            scope.launch { searchBarState.animateToCollapsed() }
-                        }else{
-                            scope.launch { searchBarState.animateToCollapsed() }
-                        }
-
+                        viewModel.clearSearchResults()
+                        searchText = ""
+                        searchResultsShow = false
+                        scope.launch { searchBarState.animateToCollapsed() }
                     },
                     onSearchClick = {
-                        if(textFieldState.text.isNotEmpty()){
-                        viewModel.searchExperiences(textFieldState.text.toString())
-                        searchResultsShow = true }
+                        if (searchText.isNotEmpty()) {
+                            viewModel.searchExperiences(searchText)
+                            searchResultsShow = true
+                            keyboardController?.hide()
+                        }else{
+                            searchResultsShow = false
+                            keyboardController?.hide()
+                            scope.launch { searchBarState.animateToCollapsed() }
+                        }
                     }
-
                 )
                 Spacer(modifier.padding(dimensionResource(R.dimen.padding_medium)))
                 if (!searchResultsShow){
@@ -154,39 +176,16 @@ fun HomeScreen(
 fun TopBar(
     modifier: Modifier = Modifier,
     searchBarState: SearchBarState,
-    textFieldState: TextFieldState,
+    keyboardController: SoftwareKeyboardController?,
+    searchText: String,
+    onSearchTextChanged: (String) -> Unit,
     scope: CoroutineScope,
     onSearchClick: () -> Unit,
     onCancelClick: () -> Unit
-){
+) {
+    val focusRequester = remember { FocusRequester() }
 
-    val inputField =
-        @Composable {
-            SearchBarDefaults.
-            InputField(modifier = Modifier,
-                searchBarState = searchBarState,
-                textFieldState = textFieldState,
-                onSearch = { scope.launch { searchBarState.animateToCollapsed() } },
-                placeholder = {  if (textFieldState.text.isEmpty())
-                    Text(stringResource(R.string.try_luxor))  },
-                leadingIcon = { IconButton(
-                    onClick = onSearchClick
-                ){
-                    Icon(Icons.Default.Search, contentDescription = null)
-                } },
-                trailingIcon = {
-                    if (searchBarState.currentValue == SearchBarValue.Expanded) {
-                        IconButton(
-                            onClick = onCancelClick
-                        ) {
-                            Icon(Icons.Default.Clear, contentDescription = null)
-                        }
-                    }
-                }
-            )
-        }
-
-    Row (
+    Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -195,26 +194,61 @@ fun TopBar(
                 top = dimensionResource(R.dimen.padding_medium),
                 bottom = dimensionResource(R.dimen.padding_medium)
             )
-    ){
-        Icon(Icons.Default.Menu,
-            contentDescription = null,
-            modifier = modifier
-                .weight(1f))
+    ) {
+        Icon(Icons.Default.Menu, contentDescription = null, modifier = Modifier.weight(1f))
 
-        SearchBar(
-            state = searchBarState,
-            inputField = inputField,
-            modifier = modifier
-                .weight(5f))
+        TextField(
+            value = searchText,
+            onValueChange = onSearchTextChanged,
+            singleLine = true,
+            placeholder = { Text(stringResource(R.string.try_luxor)) },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
 
-        Icon(Icons.Default.Tune,
-            contentDescription = null,
-            modifier = modifier
-                .weight(1f)
+
+            leadingIcon = {
+                IconButton(onClick = onSearchClick) {
+                    Icon(Icons.Default.Search, contentDescription = null)
+                }
+            },
+
+            trailingIcon = {
+                if (searchText.isNotEmpty()) {
+                    IconButton(onClick = onCancelClick) {
+                        Icon(Icons.Default.Clear, contentDescription = null)
+                    }
+                }
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = {
+                onSearchClick()
+                keyboardController?.hide()
+            }),
+            modifier = Modifier
+                .weight(5f)
+                .focusRequester(focusRequester)
+                .clip(shape = MaterialTheme.shapes.small)
+                .onFocusChanged { focusState ->
+                    if (focusState.isFocused) {
+                        scope.launch {
+                            delay(300)
+                            focusRequester.requestFocus()
+                        }
+                    }
+                }
+
         )
 
+        Icon(Icons.Default.Tune, contentDescription = null, modifier = Modifier.weight(1f))
     }
 }
+
 
 @Composable
 fun WelcomeText(
