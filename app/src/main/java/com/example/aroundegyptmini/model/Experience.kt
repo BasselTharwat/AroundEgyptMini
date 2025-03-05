@@ -2,6 +2,7 @@ package com.example.aroundegyptmini.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 
 @Serializable
@@ -181,3 +182,111 @@ data class Period(
     @SerialName("updated_at")
     val updatedAt: String = ""
 )
+
+fun City.toEntity(): CityEntity {
+    return CityEntity(
+        id = id,
+        name = name,
+        disable = disable,
+        topPick = topPick
+    )
+}
+fun Era.toEntity(): EraEntity {
+    return EraEntity(
+        id = id,
+        value = value,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )
+}
+
+fun Period.toEntity(): PeriodEntity {
+    return PeriodEntity(
+        id = id,
+        value = value,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
+}
+
+fun GMapLocation.toEntity(): GMapLocationEntity {
+    return GMapLocationEntity(
+        type = type,
+        coordinates = coordinates.joinToString(",")
+    )
+}
+
+fun TranslatedOpeningHour.toEntity(): TranslatedOpeningHourEntity {
+    return TranslatedOpeningHourEntity(
+        day = day,
+        time = time
+    )
+}
+
+fun TicketPrice.toEntity(): TicketPriceEntity {
+    return TicketPriceEntity(
+        type = type,
+        price = price
+    )
+}
+
+fun Review.toEntity(): ReviewEntity {
+    return ReviewEntity(
+        id = id,
+        experience = experience,
+        name = name,
+        rating = rating,
+        comment = comment,
+        createdAt = createdAt
+    )
+}
+
+fun Tag.toEntity(): TagEntity {
+    return TagEntity(
+        id = id,
+        name = name,
+        disable = disable,
+        topPick = topPick,
+    )
+}
+
+
+
+fun Experience.toEntity(): ExperienceEntity {
+    return ExperienceEntity(
+        id = id,
+        title = title,
+        coverPhoto = coverPhoto,
+        description = description,
+        viewsNo = viewsNo,
+        likesNo = likesNo,
+        recommended = recommended,
+        hasVideo = hasVideo,
+        address = address,
+        rating = rating,
+        reviewsNo = reviewsNo,
+        audioUrl = audioUrl,
+        hasAudio = hasAudio,
+        isLiked = isLiked,
+
+        tags = Json.encodeToString(tags),
+        ticketPrices = Json.encodeToString(ticketPrices),
+        reviews = Json.encodeToString(reviews),
+
+        famousFigure = famousFigure,
+        detailedDescription = detailedDescription,
+        gmapLocation = gmapLocation.toEntity(),
+        startingPrice = startingPrice,
+        tourUrl = tourUrl,
+        tourXml = tourXml,
+        tourHtml = tourHtml,
+        founded = founded,
+        city = city.toEntity(),
+        era = era?.toEntity(),
+        period = period?.toEntity(),
+        tours = Json.encodeToString(tours),
+        openingHours = Json.encodeToString(openingHours),
+        translatedOpeningHours = Json.encodeToString(translatedOpeningHours),
+        experienceTips = Json.encodeToString(experienceTips),
+    )
+}

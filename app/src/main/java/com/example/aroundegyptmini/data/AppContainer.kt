@@ -1,6 +1,9 @@
 package com.example.aroundegyptmini.data
 
+import android.content.Context
+import com.example.aroundegyptmini.AroundEgyptMiniApplication
 import com.example.aroundegyptmini.network.ExperienceApiService
+import com.example.aroundegyptmini.network.ExperienceDao
 import retrofit2.Retrofit
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -10,7 +13,15 @@ interface AppContainer{
     val experienceRepository: ExperienceRepository
 }
 
-class DefaultAppContainer: AppContainer{
+class DefaultAppContainer(context: Context) : AppContainer{
+
+    private val database: ExperienceDatabase by lazy {
+        ExperienceDatabase.getDatabase(context)
+    }
+
+    private val experienceDao: ExperienceDao = database.experienceDao()
+
+
     private val baseUrl = "https://aroundegypt.34ml.com/"
 
     private val retrofit: Retrofit = Retrofit.Builder()
@@ -23,6 +34,6 @@ class DefaultAppContainer: AppContainer{
     }
 
     override val experienceRepository: ExperienceRepository by lazy {
-        NetworkExperienceRepository(retrofitService)
+        NetworkExperienceRepository(retrofitService, experienceDao)
     }
 }
